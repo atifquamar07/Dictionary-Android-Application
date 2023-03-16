@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Dictionary</string>
+    <string name="welcome">Welcome to the Dictionary Application!</string>
+    <string name="hint">eg: Mango</string>
+</resources>
