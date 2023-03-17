@@ -1,9 +1,10 @@
 package com.example.dictionary
 
-import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -14,46 +15,48 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-private class MyTask : AsyncTask<String, Void, String>() {
-    @Deprecated("Deprecated in Java")
-    override fun doInBackground(vararg params: String): String {
-        Log.i("Size of params", "${params.size}")
-        val urlStr = "https://api.dictionaryapi.dev/api/v2/entries/en/${params[0]}"
-        val url = URL(urlStr)
-        val urlConnection = url.openConnection() as HttpURLConnection
-        var ans = ""
-        try {
-            val inputStream = BufferedInputStream(urlConnection.inputStream)
-            val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-            val stringBuilder = StringBuilder()
-            bufferedReader.forEachLine { stringBuilder.append(it) }
-            ans = stringBuilder.toString()
-        } catch (e: FileNotFoundException) {
-            Log.e("API Error", "Word not found")
-        } finally {
-            urlConnection.disconnect()
-        }
-        return ans
-    }
 
 
-    @Deprecated("Deprecated in Java")
-    override fun onPostExecute(result: String) {
-        super.onPostExecute(result)
-        if (result.isNotEmpty()) {
-            val jsonArray = JSONArray(result)
-            val jsonObject = jsonArray.getJSONObject(1) // assuming there's at least one element in the array
-            val definition = jsonObject.getString("partOfSpeech") // assuming "definition" is the attribute you want to extract
-            Log.i("Status", "Word found and the partofSPeech is $definition")
-        } else {
-            Log.i("Status", "Word NOT found")
-        }
-    }
-
-}
 class MainActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private lateinit var submit: Button
+    var jsonArray: JSONArray = JSONArray()
+
+    private inner class FetchJSON : AsyncTask<String, Void, String>() {
+        @Deprecated("Deprecated in Java")
+        override fun doInBackground(vararg params: String): String {
+            Log.i("Size of params", "${params.size}")
+            val urlStr = "https://api.dictionaryapi.dev/api/v2/entries/en/${params[0]}"
+            val url = URL(urlStr)
+            val urlConnection = url.openConnection() as HttpURLConnection
+            var ans = ""
+            try {
+                val inputStream = BufferedInputStream(urlConnection.inputStream)
+                val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+                val stringBuilder = StringBuilder()
+                bufferedReader.forEachLine { stringBuilder.append(it) }
+                ans = stringBuilder.toString()
+            } catch (e: FileNotFoundException) {
+                Log.e("API Error", "Word not found")
+            } finally {
+                urlConnection.disconnect()
+            }
+            return ans
+        }
+
+        @Deprecated("Deprecated in Java")
+        override fun onPostExecute(result: String) {
+            super.onPostExecute(result)
+            if (result.isNotEmpty()) {
+                jsonArray = JSONArray(result)
+                val jsonObject = jsonArray.getJSONObject(0)
+                val getUrl = jsonObject.getString("sourceUrls")
+                Log.i("Status", "Word found and the sourceUrls is $getUrl")
+            } else {
+                Log.i("Status", "Word NOT found")
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +68,22 @@ class MainActivity : AppCompatActivity() {
 
         submit.setOnClickListener {
             word = editText.text.toString()
-            MyTask().execute(word)
-            Toast.makeText(this, "Input: $word", Toast.LENGTH_SHORT).show()
+            FetchJSON().execute(word)
+            val handler = Handler()
+            val delay = 5000L // 5 seconds
+
+            handler.postDelayed({
+                val jsonObject = jsonArray.getJSONObject(0)
+                val getUrl = jsonObject.getString("sourceUrls")
+                Log.i("IN main activity", "Word found and the sourceUrls is $getUrl")
+                val jsonString = jsonArray.toString()
+                val intent = Intent(this, Result::class.java)
+                intent.putExtra("jsonArray", jsonString)
+                Toast.makeText(this, "Input: $word", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+            }, delay)
+
+
         }
 
     }
