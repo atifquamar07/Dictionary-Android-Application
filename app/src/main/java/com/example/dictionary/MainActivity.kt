@@ -15,14 +15,16 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-
+interface FetchJSONCallback {
+    fun onFetchCompleted()
+}
 
 class MainActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private lateinit var submit: Button
     var jsonArray: JSONArray = JSONArray()
 
-    private inner class FetchJSON : AsyncTask<String, Void, String>() {
+    private inner class FetchJSON(private val callback: FetchJSONCallback) : AsyncTask<String, Void, String>() {
         @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: String): String {
             Log.i("Size of params", "${params.size}")
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Log.i("Status", "Word NOT found")
             }
+            callback.onFetchCompleted()
         }
     }
 
@@ -68,20 +71,20 @@ class MainActivity : AppCompatActivity() {
 
         submit.setOnClickListener {
             word = editText.text.toString()
-            FetchJSON().execute(word)
-            val handler = Handler()
-            val delay = 5000L // 5 seconds
 
-            handler.postDelayed({
-                val jsonObject = jsonArray.getJSONObject(0)
-                val getUrl = jsonObject.getString("sourceUrls")
-                Log.i("IN main activity", "Word found and the sourceUrls is $getUrl")
-                val jsonString = jsonArray.toString()
-                val intent = Intent(this, Result::class.java)
-                intent.putExtra("jsonArray", jsonString)
-                Toast.makeText(this, "Input: $word", Toast.LENGTH_SHORT).show()
-                startActivity(intent)
-            }, delay)
+            FetchJSON(object : FetchJSONCallback {
+                override fun onFetchCompleted() {
+                    val jsonObject = jsonArray.getJSONObject(0)
+                    val getUrl = jsonObject.getString("sourceUrls")
+                    Log.i("IN main activity", "Word found and the sourceUrls is $getUrl")
+                    val jsonString = jsonArray.toString()
+                    val intent = Intent(applicationContext, Result::class.java)
+                    intent.putExtra("jsonArray", jsonString)
+                    Toast.makeText(applicationContext, "Input: $word", Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                }
+            }).execute(word)
+
 
 
         }
