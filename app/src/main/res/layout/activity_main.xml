@@ -45,7 +45,7 @@
         android:textSize="17sp"
         android:layout_centerHorizontal="true"
         android:textAllCaps="false"
-        android:text="Submit" />
+        android:text="Find Meaning" />
 
 
 </RelativeLayout>
