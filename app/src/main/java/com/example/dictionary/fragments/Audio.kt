@@ -55,7 +55,7 @@ class Audio : Fragment() {
             btAudio = view.findViewById(R.id.btn_audio)
             btAudio.setOnClickListener {
                 if (audioUrl.isBlank()) {
-                    Toast.makeText(requireContext(), "Audio URL is empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Audio not available", Toast.LENGTH_SHORT).show()
                 } else {
                     val mediaPlayer = MediaPlayer()
                     mediaPlayer.setDataSource(audioUrl)

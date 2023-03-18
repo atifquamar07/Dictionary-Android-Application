@@ -11,10 +11,11 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="17sp"
-        android:text="Inside Result Activity"
+        android:text="1. To listen the pronunciation, click below"
         tools:ignore="HardcodedText" />
 
 
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.example.dictionary.fragments.Audio"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal"
         tools:layout="@layout/fragment_audio"/>
 

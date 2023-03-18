@@ -13,6 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:textSize="17sp"
+        android:textAllCaps="false"
         android:text="Play Audio" />
 
 </FrameLayout>
