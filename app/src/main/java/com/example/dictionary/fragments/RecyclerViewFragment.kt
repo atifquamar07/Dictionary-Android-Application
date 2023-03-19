@@ -1,5 +1,6 @@
 package com.example.dictionary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dictionary.DetailActivity
 import com.example.dictionary.MeaningAdapter
 import com.example.dictionary.R
 import org.json.JSONArray
@@ -18,14 +20,10 @@ class RecyclerViewFragment : Fragment(), MeaningAdapter.OnItemClickListener {
     private var jsonArray: JSONArray? = null
 
     override fun onItemClick(position: Int) {
-        val fragmentManager = childFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        val myFragment = jsonArray?.let { DetailFragment.newInstance(it, position) }
-        if (myFragment != null) {
-            fragmentTransaction.add(R.id.detailFragmentContainerView, myFragment)
-        }
-        fragmentTransaction.commit()
-
+        val intent = Intent(activity, DetailActivity::class.java)
+        intent.putExtra("jsonString", jsonArray.toString())
+        intent.putExtra("position", position)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

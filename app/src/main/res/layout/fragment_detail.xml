@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_detail_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.DetailFragment">
 
     <TextView
+        android:id="@+id/description_detail"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Details:"/>
+
+    <TextView
         android:id="@+id/heading_pos"
+        android:layout_below="@+id/description_detail"
         android:layout_width="wrap_content"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
         android:text="Part of Speech: "
         android:textStyle="bold"/>
@@ -15,12 +27,15 @@
     <TextView
         android:id="@+id/pos"
         android:layout_width="wrap_content"
+        android:layout_below="@+id/description_detail"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/heading_pos"
-        android:text="Set POS " />
+        android:text="" />
 
     <TextView
         android:id="@+id/heading_definition"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/pos"
@@ -33,14 +48,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:textSize="18sp"
         android:layout_below="@+id/pos"
         android:layout_toEndOf="@+id/heading_definition"
-        android:text="Set Definition " />
+        android:text="" />
 
     <TextView
         android:id="@+id/heading_synonym"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
+        android:textSize="18sp"
         android:layout_below="@+id/heading_definition"
         android:layout_height="wrap_content"
         android:text="Synonoyms: "
@@ -50,16 +67,18 @@
         android:id="@+id/synonym"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/definition"
         android:layout_toEndOf="@+id/heading_synonym"
-        android:text="Set Synonyms " />
+        android:text="" />
 
 
     <TextView
         android:id="@+id/heading_antonym"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
+        android:textSize="18sp"
         android:layout_below="@+id/synonym"
         android:layout_height="wrap_content"
         android:text="Antonyms: "
@@ -69,14 +88,16 @@
         android:id="@+id/antonym"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/synonym"
         android:layout_toEndOf="@+id/heading_antonym"
-        android:text="Set Antonyms " />
+        android:text="" />
 
 
     <TextView
         android:id="@+id/heading_examples"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/heading_antonym"
@@ -87,11 +108,12 @@
     <TextView
         android:id="@+id/examples"
         android:layout_width="wrap_content"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/antonym"
         android:layout_toEndOf="@+id/heading_examples"
-        android:text="Set Examples " />
+        android:text="" />
 
 
 
