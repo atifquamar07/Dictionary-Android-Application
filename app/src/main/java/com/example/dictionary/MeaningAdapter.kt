@@ -9,8 +9,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 
-class MeaningAdapter(val posList: List<String>, private val jsonArray: JSONArray): RecyclerView.Adapter<MeaningAdapter.MeaningViewHolder>() {
 
+
+class MeaningAdapter(val posList: List<String>, private val jsonArray: JSONArray, private val listener: OnItemClickListener): RecyclerView.Adapter<MeaningAdapter.MeaningViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeaningViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.pos_item_view, parent, false)
@@ -19,6 +24,9 @@ class MeaningAdapter(val posList: List<String>, private val jsonArray: JSONArray
 
     override fun onBindViewHolder(holder: MeaningViewHolder, position: Int) {
         holder.posText.text = posList[position]
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

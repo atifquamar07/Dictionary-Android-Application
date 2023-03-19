@@ -6,20 +6,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionary.MeaningAdapter
 import com.example.dictionary.R
 import org.json.JSONArray
 
-class RecyclerViewFragment : Fragment() {
+class RecyclerViewFragment : Fragment(), MeaningAdapter.OnItemClickListener {
 
     private var jsonArray: JSONArray? = null
+
+    override fun onItemClick(position: Int) {
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        val myFragment = jsonArray?.let { DetailFragment.newInstance(it, position) }
+        if (myFragment != null) {
+            fragmentTransaction.add(R.id.detailFragmentContainerView, myFragment)
+        }
+        fragmentTransaction.commit()
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -31,7 +42,6 @@ class RecyclerViewFragment : Fragment() {
         arguments?.let {
             val jsonArrayString = it.getString("jsonArray")
             jsonArray = JSONArray(jsonArrayString)
-//            val jsonArray = JSONArray(jsonArrayString)
             val tempJSONObject = jsonArray!!.getJSONObject(0)
             val getMeaningsJSON = tempJSONObject.getJSONArray("meanings")
 
@@ -43,11 +53,10 @@ class RecyclerViewFragment : Fragment() {
 
         }
         Log.i("Inside recycler view frag", "HELLO")
-//        val pos = listOf("noun", "verb", "adjective", "adverb", "preposition", "atif")
         val rec = view?.findViewById<RecyclerView>(R.id.posRecyclerView)
 
         if (rec != null) {
-            rec.adapter = jsonArray?.let { MeaningAdapter(partsOfSpeech, it) }
+            rec.adapter = jsonArray?.let { MeaningAdapter(partsOfSpeech, it, this) }
             rec.layoutManager = LinearLayoutManager(requireContext())
         }
         return view
@@ -55,30 +64,7 @@ class RecyclerViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val tempJSONObject = jsonArray?.getJSONObject(0)
-//        val getMeaningsJSON = tempJSONObject?.getJSONArray("meanings")
-//        val partsOfSpeech = mutableListOf<String>()
-//        if (getMeaningsJSON != null) {
-//            for (i in 0 until getMeaningsJSON.length()) {
-//                val jsonObject = getMeaningsJSON.getJSONObject(i)
-//                val partOfSpeech = jsonObject.getString("partOfSpeech")
-//                partsOfSpeech.add(partOfSpeech)
-//            }
-//        }
-//
-//        if (getMeaningsJSON != null) {
-//            for (i in 0 until getMeaningsJSON.length()) {
-//                val jsonObject = getMeaningsJSON.getJSONObject(i)
-//                val partOfSpeech = jsonObject.getString("partOfSpeech")
-//                partsOfSpeech.add(partOfSpeech)
-//            }
-//        }
-//        val rec = view.findViewById<RecyclerView>(R.id.posRecyclerView)
-//
-//        if (rec != null) {
-//            rec.adapter = jsonArray?.let { MeaningAdapter(partsOfSpeech, view, it) }
-//            rec.layoutManager = LinearLayoutManager(requireContext())
-//        }
+
     }
 
     companion object {
