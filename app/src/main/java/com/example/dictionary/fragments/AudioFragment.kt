@@ -23,20 +23,14 @@ import org.json.JSONArray
  * Use the [Audio.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Audio : Fragment() {
+class AudioFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private var jsonArray: JSONArray? = null
     private lateinit var btAudio: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("IN AUDIO FRAGMENT", "HELLO")
-        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -79,8 +73,8 @@ class Audio : Fragment() {
     }
 
     companion object {
-        fun newInstance(jsonArray: JSONArray): Audio {
-            val fragment = Audio()
+        fun newInstance(jsonArray: JSONArray): AudioFragment {
+            val fragment = AudioFragment()
             val args = Bundle()
             args.putString("jsonArray", jsonArray.toString())
             fragment.arguments = args

@@ -22,7 +22,8 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="70dp"
+        android:layout_below="@+id/idWord"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="17sp"
@@ -34,14 +35,46 @@
         android:id="@+id/fragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.example.dictionary.fragments.Audio"
-        android:layout_marginTop="110dp"
+        android:name="com.example.dictionary.fragments.AudioFragment"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         tools:layout="@layout/fragment_audio"/>
 
+    <TextView
+        android:id="@+id/description_pos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragmentContainerView"
+        android:layout_marginTop="20dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:text="2. Parts of Speech of different meanings are"
+        tools:ignore="HardcodedText" />
 
 
-<!--    <FrameLayout-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/posRecyclerView"-->
+<!--        android:layout_below="@+id/description_pos"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/id_fragment_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.example.dictionary.fragments.RecyclerViewFragment"
+        android:layout_below="@+id/description_pos"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        tools:layout="@layout/fragment_recycler_view"/>
+
+
+
+
+    <!--    <FrameLayout-->
 <!--        android:id="@+id/fragment_audio"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

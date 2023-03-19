@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.example.dictionary.fragments.Audio
-import com.example.dictionary.fragments.ListOfMeanings
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.dictionary.fragments.AudioFragment
+import com.example.dictionary.fragments.RecyclerViewFragment
 import org.json.JSONArray
 import java.util.*
+
 
 class Result : AppCompatActivity() {
 
@@ -28,9 +30,18 @@ class Result : AppCompatActivity() {
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val myFragment = Audio.newInstance(jsonArray)
+        val myFragment = AudioFragment.newInstance(jsonArray)
         fragmentTransaction.add(R.id.fragmentContainerView, myFragment)
         fragmentTransaction.commit()
+
+
+        val recyclerFragment = supportFragmentManager
+        val recyclerFragmentTransaction = recyclerFragment.beginTransaction()
+        val recyclerFrag = RecyclerViewFragment.newInstance(jsonArray)
+        recyclerFragmentTransaction.add(R.id.id_fragment_recycler_view, recyclerFrag)
+        recyclerFragmentTransaction.commit()
+
+
 
 
 
