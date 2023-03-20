@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                 ans = stringBuilder.toString()
             } catch (e: FileNotFoundException) {
                 Log.e("API Error", "Word not found")
+                return "Word not found"
             } finally {
                 urlConnection.disconnect()
             }
@@ -48,6 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         @Deprecated("Deprecated in Java")
         override fun onPostExecute(result: String) {
+            if (result == "Word not found") {
+                Toast.makeText(applicationContext, "Word not found", Toast.LENGTH_SHORT).show()
+                return
+            }
             super.onPostExecute(result)
             if (result.isNotEmpty()) {
                 jsonArray = JSONArray(result)
@@ -71,12 +76,15 @@ class MainActivity : AppCompatActivity() {
 
         submit.setOnClickListener {
             word = editText.text.toString()
-
+            if(word == ""){
+                Toast.makeText(applicationContext, "Word can't be blank", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             FetchJSON(object : FetchJSONCallback {
                 override fun onFetchCompleted() {
                     val jsonObject = jsonArray.getJSONObject(0)
                     val getUrl = jsonObject.getString("sourceUrls")
-                    Log.i("IN main activity", "Word found and the sourceUrls is $getUrl")
+                    Log.i("In main activity", "Word found and the sourceUrls is $getUrl")
                     val jsonString = jsonArray.toString()
                     val intent = Intent(applicationContext, Result::class.java)
                     intent.putExtra("jsonArray", jsonString)
