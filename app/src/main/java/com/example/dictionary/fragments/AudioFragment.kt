@@ -1,6 +1,9 @@
 package com.example.dictionary.fragments
 
+import android.annotation.SuppressLint
+import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,22 +14,40 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.dictionary.R
 import org.json.JSONArray
+import java.io.IOException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-
-/*
- *
- * A simple [Fragment] subclass.
- * Use the [Audio.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AudioFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var jsonArray: JSONArray? = null
     private lateinit var btAudio: Button
+    @SuppressLint("StaticFieldLeak")
+    private inner class PlayAudioTask(private val audioUrl: String) : AsyncTask<Void, Void, Boolean>() {
+
+        private var mediaPlayer: MediaPlayer? = null
+        @Deprecated("Deprecated in Java")
+        override fun doInBackground(vararg params: Void?): Boolean {
+            val mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(audioUrl)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener { player ->
+                player.start()
+            }
+            mediaPlayer.setOnCompletionListener {
+                mediaPlayer.release()
+            }
+            return true
+        }
+        @Deprecated("Deprecated in Java")
+        override fun onCancelled(result: Boolean?) {
+            super.onCancelled(result)
+            mediaPlayer?.release()
+        }
+        @Deprecated("Deprecated in Java")
+        override fun onPostExecute(result: Boolean?) {
+            super.onPostExecute(result)
+            mediaPlayer?.release()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,15 +72,8 @@ class AudioFragment : Fragment() {
                 if (audioUrl.isBlank()) {
                     Toast.makeText(requireContext(), "Audio not available", Toast.LENGTH_SHORT).show()
                 } else {
-                    val mediaPlayer = MediaPlayer()
-                    mediaPlayer.setDataSource(audioUrl)
-                    mediaPlayer.prepareAsync()
-                    mediaPlayer.setOnPreparedListener { player ->
-                        player.start()
-                    }
-                    mediaPlayer.setOnCompletionListener {
-                        mediaPlayer.release()
-                    }
+                    val playAudioTask = PlayAudioTask(audioUrl)
+                    playAudioTask.execute()
                 }
             }
         }

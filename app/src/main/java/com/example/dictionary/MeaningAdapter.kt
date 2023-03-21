@@ -9,9 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 
-
-
-class MeaningAdapter(val posList: List<String>, private val jsonArray: JSONArray, private val listener: OnItemClickListener): RecyclerView.Adapter<MeaningAdapter.MeaningViewHolder>() {
+class MeaningAdapter(private val posList: List<String>, private val jsonArray: JSONArray, private val listener: OnItemClickListener): RecyclerView.Adapter<MeaningAdapter.MeaningViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)

@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private inner class FetchJSON(private val callback: FetchJSONCallback) : AsyncTask<String, Void, String>() {
         @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: String): String {
-            Log.i("Size of params", "${params.size}")
             val urlStr = "https://api.dictionaryapi.dev/api/v2/entries/en/${params[0]}"
             val url = URL(urlStr)
             val urlConnection = url.openConnection() as HttpURLConnection
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                     val jsonString = jsonArray.toString()
                     val intent = Intent(applicationContext, Result::class.java)
                     intent.putExtra("jsonArray", jsonString)
-                    Toast.makeText(applicationContext, "Input: $word", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Word searched: $word", Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                 }
             }).execute(word)
