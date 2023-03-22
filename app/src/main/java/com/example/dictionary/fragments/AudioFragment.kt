@@ -23,29 +23,25 @@ class AudioFragment : Fragment() {
     @SuppressLint("StaticFieldLeak")
     private inner class PlayAudioTask(private val audioUrl: String) : AsyncTask<Void, Void, Boolean>() {
 
-        private var mediaPlayer: MediaPlayer? = null
+        private var mediaPlayer: MediaPlayer = MediaPlayer()
         @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: Void?): Boolean {
-            val mediaPlayer = MediaPlayer()
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
             mediaPlayer.setDataSource(audioUrl)
             mediaPlayer.prepareAsync()
-            mediaPlayer.setOnPreparedListener { player ->
-                player.start()
-            }
-            mediaPlayer.setOnCompletionListener {
-                mediaPlayer.release()
-            }
             return true
         }
         @Deprecated("Deprecated in Java")
         override fun onCancelled(result: Boolean?) {
             super.onCancelled(result)
-            mediaPlayer?.release()
+            mediaPlayer.release()
         }
         @Deprecated("Deprecated in Java")
         override fun onPostExecute(result: Boolean?) {
             super.onPostExecute(result)
-            mediaPlayer?.release()
+            mediaPlayer.setOnPreparedListener { player ->
+                player.start()
+            }
         }
     }
 
