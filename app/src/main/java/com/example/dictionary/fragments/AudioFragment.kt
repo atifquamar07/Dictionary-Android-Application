@@ -65,11 +65,17 @@ class AudioFragment : Fragment() {
             val jsonObject = jsonArray.getJSONObject(0)
             val getUrl = jsonObject.getString("sourceUrls")
             Log.i("Message in audio", "Word found and the sourceUrls is $getUrl")
-            val audioUrl = jsonArray.getJSONObject(0).getJSONArray("phonetics").getJSONObject(0).getString("audio")
+            var isAudioPresent = false
+            var audioUrl = ""
+            if(jsonArray.getJSONObject(0).getJSONArray("phonetics").length() > 0){
+                audioUrl = jsonArray.getJSONObject(0).getJSONArray("phonetics").getJSONObject(0).getString("audio")
+                isAudioPresent = true
+            }
 
             btAudio = view.findViewById(R.id.btn_audio)
             btAudio.setOnClickListener {
-                if (audioUrl.isBlank()) {
+                Log.i("Audio URL on button click in Audio frag", audioUrl)
+                if (audioUrl.isBlank() or !isAudioPresent) {
                     Toast.makeText(requireContext(), "Audio not available", Toast.LENGTH_SHORT).show()
                 } else {
                     val playAudioTask = PlayAudioTask(audioUrl)
